@@ -52,6 +52,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
 
+//    Intent s= new Intent(this, locService.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
 
         username=settings.getString("lusername","");
+//        s.putExtra("username",username);
 
         if(!u.equals("")) {
             Toast.makeText(Main2Activity.this, username, Toast.LENGTH_LONG).show();
@@ -250,12 +253,13 @@ int k;
 
     @Override
     public void onResume() {
+//        stopService(s);
         mapView.onResume();
         super.onResume();
     }
     @Override
     public void onPause() {
-        locRef.child(username).removeValue();
+//        startService(s);
         super.onPause();
         mapView.onPause();
     }
