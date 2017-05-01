@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.otheruserapp.createAccountActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:hint="Name"
+            android:textColorHint="@color/colorHint"
+            android:id="@+id/name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:textSize="24sp"
+            android:hint="username"
+            android:textColorHint="@color/colorHint"/>
+
+        <EditText
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/phoneno"
+            android:inputType="phone"
+            android:hint="Phone no"
+            android:textColorHint="@color/colorHint"/>
+
+        <EditText
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/password"
+            android:hint="password"
+            android:textColorHint="@color/colorHint"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="Create Account"
+        android:textAlignment="center"
+        android:id="@+id/create"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
