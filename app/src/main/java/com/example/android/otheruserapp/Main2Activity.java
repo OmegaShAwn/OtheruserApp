@@ -58,7 +58,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_main2);
 
         SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-        //Get "hasLoggedIn" value. If the value doesn't exist yet false is returned
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
         String u=settings.getString("lusername","");
 
