@@ -52,11 +52,13 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
 
-//    Intent s= new Intent(this, locService.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent s= new Intent(this, locService.class);
+
         setContentView(R.layout.activity_main2);
 
         SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
@@ -72,7 +74,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
 
         username=settings.getString("lusername","");
-//        s.putExtra("username",username);
+        s.putExtra("username",username);
+        startService(s);
 
         if(!u.equals("")) {
             Toast.makeText(Main2Activity.this, username, Toast.LENGTH_LONG).show();
@@ -202,8 +205,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onLocationChanged(Location location) {
-        LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
-        locRef.child(username).child("locationDetails").setValue(loc);
+//        LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
+//        locRef.child(username).child("locationDetails").setValue(loc);
 
         if (googleMap != null)
             googleMap.clear();
@@ -253,12 +256,14 @@ int k;
 
     @Override
     public void onResume() {
+//        Intent s= new Intent(this, locService.class);
 //        stopService(s);
         mapView.onResume();
         super.onResume();
     }
     @Override
     public void onPause() {
+//        Intent s= new Intent(this, locService.class);
 //        startService(s);
         super.onPause();
         mapView.onPause();
