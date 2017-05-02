@@ -8,17 +8,16 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.gms.location.LocationListener;
 
 /**
  * Created by ShAwn on 01-05-2017.
@@ -35,11 +34,7 @@ public locService() {
         throw new UnsupportedOperationException("Not Yet Implemented");
     }
 
-    public void onDestroy(){
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
-        locRef.child(username).removeValue();
-        super.onDestroy();
-    }
+
 
     private final String LOG_TAG = "roshantest";
     private LocationRequest mLocationRequest;
@@ -47,6 +42,7 @@ public locService() {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
     private GoogleApiClient mGoogleApiClient;
+    int r=0;
 
 
 
@@ -102,9 +98,17 @@ public locService() {
 
     @Override
     public void onLocationChanged(Location location) {
-        LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
-       locRef.child(username).child("locationDetails").setValue(loc);
+        if(r==0) {
+            LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
+            locRef.child(username).child("locationDetails").setValue(loc);
+        }
     }
 
+    @Override
+    public void onDestroy(){
+        r=1;
+        locRef.child(username).removeValue();
+        super.onDestroy();
+    }
 
 }
