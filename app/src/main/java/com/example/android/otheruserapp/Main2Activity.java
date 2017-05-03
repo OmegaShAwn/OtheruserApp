@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +53,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
     Intent s;
+    int k;
+    public static final int perm=0;
 
 
 
@@ -104,6 +107,16 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
 
 
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(Main2Activity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, perm );
+
+        }
+
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -147,7 +160,24 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case perm: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    finish();
+                    startActivity(getIntent());
+                }
+                return;
+            }
 
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
 
     @Override
@@ -172,8 +202,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     protected void onStop() {
-        locRef.child(username).removeValue();
-//
         mGoogleApiClient.disconnect();
         super.onStop();
 
@@ -224,7 +252,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             googleMap.moveCamera(cameraUpdate);
         }
     }
-int k;
+
+
+
+
     public void onBackPressed()
     {
         if(k==0) {
@@ -272,7 +303,6 @@ int k;
     }
     @Override
     public void onDestroy() {
-        locRef.child(username).removeValue();
         super.onDestroy();
         mapView.onDestroy();
     }
