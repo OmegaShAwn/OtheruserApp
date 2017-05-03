@@ -36,8 +36,6 @@ public class locService extends Service implements  LocationListener {
         throw new UnsupportedOperationException("Not Yet Implemented");
     }
 
-
-    private final String LOG_TAG = "roshantest";
     private LocationRequest mLocationRequest;
     String username;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -45,7 +43,6 @@ public class locService extends Service implements  LocationListener {
     int r = 0;
     int white = 0xfdfdfd;
     int off;
-    int MY_PERMISSION_ACCESS_COARSE_LOCATION=11;
 
     public void onCreate() {
         super.onCreate();
@@ -67,11 +64,10 @@ public class locService extends Service implements  LocationListener {
             Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(onGPS);
         }
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
-//            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, MY_PERMISSION_ACCESS_COARSE_LOCATION );
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,this);
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {}
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,60000,0,this);
 
         showNotif();
 
