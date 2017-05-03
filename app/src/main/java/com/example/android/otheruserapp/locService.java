@@ -1,5 +1,7 @@
 package com.example.android.otheruserapp;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,6 +9,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,7 +46,7 @@ public locService() {
     DatabaseReference locRef = database.getReference("Staff");
     private GoogleApiClient mGoogleApiClient;
     int r=0;
-
+    int white=0xfdfdfd;
 
 
     public void onCreate () {
@@ -63,9 +66,30 @@ public locService() {
 
         mGoogleApiClient.connect();
 
-        return(Service.START_STICKY_COMPATIBILITY);
+        showNotif();
+
+        return START_STICKY;
     }
 
+    public void showNotif() {
+
+        final PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), Main2Activity.class), 0);
+
+            final Notification notification = new NotificationCompat.Builder(getApplicationContext())
+                    .setTicker("Rajagiri Hospital")
+                    .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                    .setContentTitle("Rajagiri Hospital")
+                    .setContentText("Your location is being shared")
+                    .setContentIntent(pi)
+                    .setColor(white)
+                    .setAutoCancel(true)
+                    .build();
+
+
+
+            startForeground(1337, notification);
+
+        }
 
     @Override
     public void onMapReady(GoogleMap map) {
