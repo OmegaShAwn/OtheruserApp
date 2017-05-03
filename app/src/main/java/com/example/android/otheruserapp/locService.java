@@ -1,10 +1,8 @@
 package com.example.android.otheruserapp;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,7 +14,6 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.google.android.gms.location.LocationRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,7 +33,7 @@ public class locService extends Service implements  LocationListener {
         throw new UnsupportedOperationException("Not Yet Implemented");
     }
 
-    private LocationRequest mLocationRequest;
+
     String username;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
@@ -87,6 +84,7 @@ public class locService extends Service implements  LocationListener {
                 .setContentText("Your location is being shared")
                 .setContentIntent(pi)
                 .setColor(white)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setAutoCancel(true)
                 .build();
 
@@ -109,7 +107,7 @@ public class locService extends Service implements  LocationListener {
     }
 
 
-    @Override
+/*    @Override
     public void onTaskRemoved(Intent rootIntent) {
         System.out.println("service in onTaskRemoved");
         long ct = System.currentTimeMillis(); //get current time
@@ -121,12 +119,13 @@ public class locService extends Service implements  LocationListener {
 
         AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         mgr.setRepeating(AlarmManager.RTC_WAKEUP, ct, 1 * 60000, restartServicePI);
-    }
+    }*/
 
 
     @Override
     public void onDestroy() {
         r = 1;
+        stopSelf();
         locRef.child(username).removeValue();
         super.onDestroy();
     }

@@ -52,7 +52,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     Marker marker;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locRef = database.getReference("Staff");
-    Intent s;
     int k;
     public static final int perm=0;
 
@@ -61,7 +60,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        s= new Intent(this, locService.class);
+        Intent s= new Intent(this, locService.class);
 
         setContentView(R.layout.activity_main2);
 
@@ -133,6 +132,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent s= new Intent(Main2Activity.this, locService.class);
                 stopService(s);
                 locRef.child(username).removeValue();
                 finish();
