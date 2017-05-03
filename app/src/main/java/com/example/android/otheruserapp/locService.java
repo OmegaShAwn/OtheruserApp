@@ -1,8 +1,10 @@
 package com.example.android.otheruserapp;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -71,7 +73,6 @@ public class locService extends Service implements  LocationListener {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,this);
 
-
         showNotif();
 
         return START_STICKY;
@@ -110,6 +111,22 @@ public class locService extends Service implements  LocationListener {
             locRef.child(username).child("locationDetails").setValue(loc);
         }
     }
+
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        System.out.println("service in onTaskRemoved");
+        long ct = System.currentTimeMillis(); //get current time
+        Intent restartService = new Intent(getApplicationContext(),
+                locService.class);
+        PendingIntent restartServicePI = PendingIntent.getService(
+                getApplicationContext(), 0, restartService,
+                0);
+
+        AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.setRepeating(AlarmManager.RTC_WAKEUP, ct, 1 * 60000, restartServicePI);
+    }
+
 
     @Override
     public void onDestroy() {
