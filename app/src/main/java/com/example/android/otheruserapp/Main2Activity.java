@@ -254,8 +254,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-
-
     public void onBackPressed()
     {
         if(k==0) {
@@ -317,4 +315,3 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 
 }
-
