@@ -44,6 +44,7 @@ public class locService extends Service implements  LocationListener {
     int r = 0;
     int white = 0xfdfdfd;
     int off;
+    LocationManager locationManager;
 
     public void onCreate() {
         super.onCreate();
@@ -55,7 +56,7 @@ public class locService extends Service implements  LocationListener {
         username = s.getExtras().getString("username");
 
 
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             off=1;
         }else{
@@ -146,6 +147,7 @@ public class locService extends Service implements  LocationListener {
     @Override
     public void onDestroy() {
         r = 1;
+        locationManager.removeUpdates(this);
         locRef.child(username).removeValue();
         super.onDestroy();
     }
@@ -153,6 +155,7 @@ public class locService extends Service implements  LocationListener {
     @Override
     public boolean stopService(Intent s) {
         r = 1;
+        locationManager.removeUpdates(this);
         locRef.child(username).removeValue();
         super.stopService(s);
         return super.stopService(s);
