@@ -101,6 +101,7 @@ public class locService extends Service implements  LocationListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 //            stopSelf();
+            locRef.child(username).removeValue();
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     };
