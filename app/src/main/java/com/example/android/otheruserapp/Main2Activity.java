@@ -64,7 +64,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
         setContentView(R.layout.activity_main2);
 
-        SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        final SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
         String u=settings.getString("lusername","");
 
@@ -88,7 +88,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 
 
-        Button B = (Button) findViewById(R.id.buttonstop);
+        final Button B = (Button) findViewById(R.id.buttonstop);
         firstTime=0;
 
         int off;
@@ -132,10 +132,19 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent s= new Intent(Main2Activity.this, locService.class);
-                stopService(s);
-                locRef.child(username).removeValue();
-                finish();
+                if(B.getText().equals("STOP")) {
+                    Intent s = new Intent(Main2Activity.this, locService.class);
+                    stopService(s);
+//                    locRef.child(username).removeValue();
+                    B.setText("START");
+                }
+                else{
+                    B.setText("STOP");
+                    Intent s = new Intent(Main2Activity.this, locService.class);
+                    username=settings.getString("lusername","");
+                    s.putExtra("username",username);
+                    startService(s);
+                }
             }});
 
 

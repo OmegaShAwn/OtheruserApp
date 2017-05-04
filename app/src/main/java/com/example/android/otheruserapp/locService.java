@@ -3,7 +3,10 @@ package com.example.android.otheruserapp;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -75,13 +78,14 @@ public class locService extends Service implements  LocationListener {
 
     public void showNotif() {
 
-        final PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), Main2Activity.class), 0);
+        registerReceiver(stopServiceReceiver, new IntentFilter("myFilter"));
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent("myFilter"), PendingIntent.FLAG_UPDATE_CURRENT);
 
         final Notification notification = new NotificationCompat.Builder(getApplicationContext())
                 .setTicker("Rajagiri Hospital")
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle("Rajagiri Hospital")
-                .setContentText("Your location is being shared")
+                .setContentTitle("Rajagiri is receiving your location")
+                .setContentText("Click to stop sending location")
                 .setContentIntent(pi)
                 .setColor(white)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -92,6 +96,14 @@ public class locService extends Service implements  LocationListener {
         startForeground(1337, notification);
 
     }
+
+    protected BroadcastReceiver stopServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+//            stopSelf();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    };
 
     public void onStatusChanged(String provider, int status, Bundle extras) {}
     public void onProviderEnabled(String provider) {}
@@ -125,7 +137,6 @@ public class locService extends Service implements  LocationListener {
     @Override
     public void onDestroy() {
         r = 1;
-        stopSelf();
         locRef.child(username).removeValue();
         super.onDestroy();
     }
