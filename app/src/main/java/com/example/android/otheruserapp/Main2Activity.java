@@ -1,7 +1,10 @@
 package com.example.android.otheruserapp;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -67,6 +70,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         final SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
         String u=settings.getString("lusername","");
+        registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
 
         if(hasLoggedIn)
         {
@@ -187,6 +191,19 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             // permissions this app might request
         }
     }
+
+
+    BroadcastReceiver broadcast_reciever = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("finish_activity")) {
+                finish();
+                // DO WHATEVER YOU WANT.
+            }
+        }
+    };
 
 
     @Override

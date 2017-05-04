@@ -1,6 +1,7 @@
 package com.example.android.otheruserapp;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -67,9 +68,8 @@ public class locService extends Service implements  LocationListener {
 
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {}
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,60000,0,this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,this);
 
-        showNotif();
 
         return START_STICKY;
     }
@@ -95,14 +95,17 @@ public class locService extends Service implements  LocationListener {
 
         startForeground(1337, notification);
 
+
     }
 
     protected BroadcastReceiver stopServiceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            stopSelf();
-            locRef.child(username).removeValue();
-            android.os.Process.killProcess(android.os.Process.myPid());
+            stopSelf();
+            Intent qwer = new Intent("finish_activity");
+            sendBroadcast(qwer);
+//            android.os.Process.killProcess(android.os.Process.myPid());
+
         }
     };
 
@@ -116,6 +119,11 @@ public class locService extends Service implements  LocationListener {
         if (r == 0) {
             LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
+            showNotif();
+        }
+        else{
+            NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            nMgr.cancelAll();
         }
     }
 
