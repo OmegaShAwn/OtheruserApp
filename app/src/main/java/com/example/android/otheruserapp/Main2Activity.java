@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -80,6 +82,9 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             startActivity(intent);
             finish();
         }
+
+        if(!isNetworkAvailable())
+            Toast.makeText(getApplicationContext(),"NO INTERNET CONNECTION",Toast.LENGTH_LONG).show();
 
         username=settings.getString("lusername","");
 
@@ -230,6 +235,12 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
     };
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     public void onMapReady(GoogleMap map) {
