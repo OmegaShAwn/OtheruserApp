@@ -84,7 +84,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
 
         if(!isNetworkAvailable())
-            Toast.makeText(getApplicationContext(),"NO INTERNET CONNECTION",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"NO INTERNET CONNECTION",Toast.LENGTH_SHORT).show();
 
         username=settings.getString("lusername","");
 
@@ -96,6 +96,12 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 Toast.makeText(Main2Activity.this,"Logged Out",Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 finish();
+                SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
+                SharedPreferences.Editor editor = settings.edit();
+
+                editor.putBoolean("hasLoggedIn",false);
+                editor.putString("lusername","");
+                editor.commit();
             }
             else{
                 Intent s= new Intent(Main2Activity.this, locService.class);

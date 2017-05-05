@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 for( i=0;i<users.size();i++){
                     if ((users.get(i).getUsername()).equals(currentUserName)){
                         usernameFound=true;
-                        //Toast.makeText(createAccountActivity.this,"Username already exists",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(createAccountActivity.this,"Username already exists",Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -124,20 +124,20 @@ public class LoginActivity extends AppCompatActivity {
 
 // Commit the edits!
                         editor.commit();
-                        Toast.makeText(LoginActivity.this,"Logged in successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"Logged in successfully",Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent(LoginActivity.this,Main2Activity.class);
                         intent.putExtra("username",currentUserName);
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(LoginActivity.this,"Incorrect Password",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"Incorrect Password",Toast.LENGTH_SHORT).show();
                     }
                 }
                 else if(f<=0){
-                    Toast.makeText(LoginActivity.this,"No Connection",Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,"No Connection",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(LoginActivity.this,"Invalid Username",Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,"Invalid Username",Toast.LENGTH_SHORT).show();
                 }
 
             }
