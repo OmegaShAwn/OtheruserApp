@@ -35,8 +35,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,7 +57,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     String username;
     Marker marker;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference locRef = database.getReference("Staff");
+    DatabaseReference ref = database.getReference("UserCategories/Otheruser");
     int k;
     public static final int perm=0;
 
@@ -63,29 +66,51 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent s= new Intent(this, locService.class);
 
         setContentView(R.layout.activity_main2);
 
         final SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
         String u=settings.getString("lusername","");
-        registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
 
-        if(hasLoggedIn)
+
+        if(!hasLoggedIn)
         {
-        }
-        else{
             Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
         username=settings.getString("lusername","");
-        s.putExtra("username",username);
-        startService(s);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+            if(!dataSnapshot.hasChild(username)){
+                Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
+                Toast.makeText(Main2Activity.this,"Logged Out",Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                finish();
+            }
+            else{
+                Intent s= new Intent(Main2Activity.this, locService.class);
+                s.putExtra("username",username);
+                startService(s);
+                registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
+            }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         if(!u.equals("")) {
-            Toast.makeText(Main2Activity.this, username, Toast.LENGTH_LONG).show();
+            Toast.makeText(Main2Activity.this, username, Toast.LENGTH_SHORT).show();
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -283,7 +308,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     public void onBackPressed()
     {
         if(k==0) {
-            Toast.makeText(getApplicationContext(), "Press Back again to log out", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Press Back again to log out", Toast.LENGTH_SHORT).show();
             k++;
         }
         else{
@@ -295,7 +320,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             editor.putBoolean("hasLoggedIn",false);
             editor.putString("lusername","");
             editor.commit();
-            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
 
@@ -313,15 +338,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onResume() {
-//        Intent s= new Intent(this, locService.class);
-//        stopService(s);
         mapView.onResume();
         super.onResume();
     }
     @Override
     public void onPause() {
-//        Intent s= new Intent(this, locService.class);
-//        startService(s);
         super.onPause();
         mapView.onPause();
     }

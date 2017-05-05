@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,6 +48,7 @@ public class locService extends Service implements  LocationListener {
     LocationManager locationManager;
 
     public void onCreate() {
+        Toast.makeText(getApplicationContext(),"Location is sent",Toast.LENGTH_SHORT).show();
         super.onCreate();
     }
 
