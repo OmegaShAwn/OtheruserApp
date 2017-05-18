@@ -44,11 +44,9 @@ public class locService extends Service implements  LocationListener {
     DatabaseReference locRef = database.getReference("Staff");
     int r = 0;
     int white = 0xfdfdfd;
-    int off;
     LocationManager locationManager;
 
     public void onCreate() {
-        Toast.makeText(getApplicationContext(),"Location is sent",Toast.LENGTH_SHORT).show();
         super.onCreate();
     }
 
@@ -60,18 +58,24 @@ public class locService extends Service implements  LocationListener {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            off=1;
-        }else{
-            off=0;        }
 
-        if(off==0){
+        }
+        else{
             Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(onGPS);
         }
 
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {}
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,this);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+            Toast.makeText(getApplicationContext(), "Location is sent", Toast.LENGTH_SHORT).show();
+            showNotif();
+        }
+//        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+//            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,0,this);
+        else
+            stopSelf();
 
 
         return START_STICKY;
@@ -122,7 +126,6 @@ public class locService extends Service implements  LocationListener {
         if (r == 0) {
             LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
-            showNotif();
         }
         else{
             NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

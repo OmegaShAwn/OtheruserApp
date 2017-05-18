@@ -60,6 +60,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     Marker marker;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("UserCategories/Otheruser");
+    DatabaseReference locref = database.getReference("Staff");
     int k;
     public static final int perm=0;
 
@@ -103,12 +104,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 editor.putString("lusername","");
                 editor.commit();
             }
-            else{
-                Intent s= new Intent(Main2Activity.this, locService.class);
-                s.putExtra("username",username);
-                startService(s);
-                registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
-            }
+
             }
 
             @Override
@@ -125,25 +121,25 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
-
-
         final Button B = (Button) findViewById(R.id.buttonstop);
-        firstTime=0;
 
-        int off;
+        firstTime=0;
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            off=1;
-        }else{
-            off=0;        }
-
-        if(off==0){
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(onGPS);
         }
+
+        if(isNetworkAvailable()&&locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Intent s= new Intent(Main2Activity.this, locService.class);
+            s.putExtra("username",username);
+            startService(s);
+            registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
+        }
+        else
+            B.setText("START");
 
 
 
@@ -172,18 +168,28 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(B.getText().equals("STOP")) {
-                    Intent s = new Intent(Main2Activity.this, locService.class);
-                    stopService(s);
+                if(!isNetworkAvailable())
+                    Toast.makeText(getApplicationContext(),"NO INTERNET CONNECTION",Toast.LENGTH_SHORT).show();
+                else {
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        if (B.getText().equals("STOP")) {
+                            Intent s = new Intent(Main2Activity.this, locService.class);
+                            stopService(s);
 //                    locRef.child(username).removeValue();
-                    B.setText("START");
-                }
-                else{
-                    B.setText("STOP");
-                    Intent s = new Intent(Main2Activity.this, locService.class);
-                    username=settings.getString("lusername","");
-                    s.putExtra("username",username);
-                    startService(s);
+                            B.setText("START");
+                        } else {
+                            B.setText("STOP");
+                            Intent s = new Intent(Main2Activity.this, locService.class);
+                            username = settings.getString("lusername", "");
+                            s.putExtra("username", username);
+                            startService(s);
+                            c=0;
+                        }
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(),"GPS NOT AVAILABLE",Toast.LENGTH_SHORT).show();
                 }
             }});
 
@@ -236,6 +242,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             String action = intent.getAction();
             if (action.equals("finish_activity")) {
                 finish();
+                System.exit(1);
                 // DO WHATEVER YOU WANT.
             }
         }
@@ -301,11 +308,16 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         Log.i(LOG_TAG,"Google api connection has been failed");
     }
 
+    int c=0;
+
     @Override
     public void onLocationChanged(Location location) {
-//        LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
-//        locRef.child(username).child("locationDetails").setValue(loc);
 
+        if(c==0) {
+        LocationDetails loc = new LocationDetails(location.getLatitude(), location.getLongitude());
+        locref.child(username).child("locationDetails").setValue(loc);
+            c++;
+        }
         if (googleMap != null)
             googleMap.clear();
         MapsInitializer.initialize(Main2Activity.this);
