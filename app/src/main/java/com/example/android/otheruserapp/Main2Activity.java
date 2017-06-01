@@ -77,12 +77,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         String u=settings.getString("lusername","");
 
 
-        if(!hasLoggedIn)
-        {
-            Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
+
 
         if(!isNetworkAvailable())
             Toast.makeText(getApplicationContext(),"NO INTERNET CONNECTION",Toast.LENGTH_SHORT).show();
@@ -115,7 +110,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 
 
-
         if(!u.equals("")) {
             Toast.makeText(Main2Activity.this, username, Toast.LENGTH_SHORT).show();
         }
@@ -127,19 +121,21 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+        if(hasLoggedIn)
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(onGPS);
         }
 
+        if(hasLoggedIn)
         if(isNetworkAvailable()&&locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Intent s= new Intent(Main2Activity.this, locService.class);
             s.putExtra("username",username);
             startService(s);
             registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
         }
-        else
-            B.setText("START");
+//        else
+//            B.setText("START");
 
 
 
@@ -210,7 +206,12 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             googleMap.moveCamera(cameraUpdate);
         }
 
-
+        if(!hasLoggedIn)
+        {
+            Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
