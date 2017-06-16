@@ -90,7 +90,7 @@ public class locService extends Service implements  LocationListener {
 
         final Notification notification = new NotificationCompat.Builder(getApplicationContext())
                 .setTicker("Rajagiri Hospital")
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Rajagiri is receiving your location")
                 .setContentText("Click to stop sending location")
                 .setContentIntent(pi)
