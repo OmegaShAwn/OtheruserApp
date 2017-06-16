@@ -23,7 +23,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDoDgq0dV0_bblgqC9jnBA5dhb9g6Bb9DU" />
 
-        <activity android:name=".Main2Activity">
+        <activity android:name=".Main2Activity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             android:label="Rajjagiri staff">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,9 +39,15 @@
             android:label="locService"
             >
         </service>
-        <activity android:name=".createAccountActivity" />
-        <activity android:name=".LoggedInActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".createAccountActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoggedInActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
