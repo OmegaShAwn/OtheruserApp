@@ -103,52 +103,53 @@ public class LoginActivity extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usernameFound=false;
-                passwordmatched=false;
-                currentUserName = username.getText().toString();
-                currentUserPassword = password.getText().toString();
-                int i;
-                int f;
-                f=users.size();
-                for( i=0;i<users.size();i++){
-                    if ((users.get(i).getUsername()).equals(currentUserName)){
-                        usernameFound=true;
-                        //Toast.makeText(createAccountActivity.this,"Username already exists",Toast.LENGTH_SHORT).show();
-                        break;
+                if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(LoginActivity.this,"GPS Permission not Provided",Toast.LENGTH_SHORT).show();
+                else {
+                    usernameFound = false;
+                    passwordmatched = false;
+                    currentUserName = username.getText().toString();
+                    currentUserPassword = password.getText().toString();
+                    int i;
+                    int f;
+                    f = users.size();
+                    for (i = 0; i < users.size(); i++) {
+                        if ((users.get(i).getUsername()).equals(currentUserName)) {
+                            usernameFound = true;
+                            //Toast.makeText(createAccountActivity.this,"Username already exists",Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                     }
-                }
-                if(usernameFound)
-                    if((users.get(i).getPassword().equals(currentUserPassword))){
-                        passwordmatched=true;
-                    }
+                    if (usernameFound)
+                        if ((users.get(i).getPassword().equals(currentUserPassword))) {
+                            passwordmatched = true;
+                        }
 
-                if(usernameFound){
-                    if(passwordmatched){
+                    if (usernameFound) {
+                        if (passwordmatched) {
 //User has successfully logged in, save this information
 // We need an Editor object to make preference changes.
-                        SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = settings.edit();
+                            SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
+                            SharedPreferences.Editor editor = settings.edit();
 
 //Set "hasLoggedIn" to true
-                        editor.putBoolean("hasLoggedIn", true);
-                        editor.putString("lusername",currentUserName);
+                            editor.putBoolean("hasLoggedIn", true);
+                            editor.putString("lusername", currentUserName);
 
 // Commit the edits!
-                        editor.commit();
-                        Toast.makeText(LoginActivity.this,"Logged in successfully",Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(LoginActivity.this,Main2Activity.class);
-                        intent.putExtra("username",currentUserName);
-                        startActivity(intent);
+                            editor.commit();
+                            Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
+                            intent.putExtra("username", currentUserName);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (f <= 0) {
+                        Toast.makeText(LoginActivity.this, "No Connection", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid Username", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        Toast.makeText(LoginActivity.this,"Incorrect Password",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else if(f<=0){
-                    Toast.makeText(LoginActivity.this,"No Connection",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this,"Invalid Username",Toast.LENGTH_SHORT).show();
                 }
 
             }

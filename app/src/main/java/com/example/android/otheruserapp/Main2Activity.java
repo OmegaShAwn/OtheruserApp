@@ -91,6 +91,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
                 Toast.makeText(Main2Activity.this,"Logged Out",Toast.LENGTH_SHORT).show();
                 startActivity(intent);
+                Intent s= new Intent(Main2Activity.this, locService.class);
+                stopService(s);
                 finish();
                 SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
                 SharedPreferences.Editor editor = settings.edit();
@@ -209,7 +211,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             }
         }
 
-        if(!hasLoggedIn)
+        if(!hasLoggedIn || ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             Intent intent=new Intent(Main2Activity.this,LoginActivity.class);
             startActivity(intent);
