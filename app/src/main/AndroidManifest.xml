@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.otheruserapp">
 
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -23,7 +22,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDoDgq0dV0_bblgqC9jnBA5dhb9g6Bb9DU" />
 
-        <activity android:name=".Main2Activity"
+        <activity
+            android:name=".Main2Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             android:label="Rajjagiri staff">
@@ -33,21 +33,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
-            android:launchMode="singleTop"
             android:name=".locService"
             android:label="locService"
-            >
-        </service>
-        <activity android:name=".createAccountActivity"
+            android:launchMode="singleTop"></service>
+
+        <activity
+            android:name=".createAccountActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LoggedInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoggedInActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".logList"></activity>
     </application>
 
 </manifest>

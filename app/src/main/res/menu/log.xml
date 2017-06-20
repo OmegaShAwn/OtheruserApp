@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <item
+        android:id="@+id/log_option"
+        android:orderInCategory="100"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:title="Log"/>
+
+</menu>
