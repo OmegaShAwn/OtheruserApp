@@ -351,7 +351,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-
+                        Intent s = new Intent(Main2Activity.this, locService.class);
+                        stopService(s);
                         Toast.makeText(getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                         SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
