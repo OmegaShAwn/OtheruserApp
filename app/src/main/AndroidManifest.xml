@@ -51,7 +51,18 @@
             android:name=".LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".logList"></activity>
+        <activity
+            android:name=".logList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".details"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".location"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
