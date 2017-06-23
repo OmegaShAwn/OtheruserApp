@@ -198,8 +198,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                             stopService(s);
 //                    locRef.child(username).removeValue();
                             B.setText("START");
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                         } else {
                             B.setText("STOP");
+                            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                             Intent s = new Intent(Main2Activity.this, locService.class);
                             username = settings.getString("lusername", "");
                             s.putExtra("username", username);
