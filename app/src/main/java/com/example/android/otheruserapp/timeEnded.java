@@ -6,7 +6,7 @@ package com.example.android.otheruserapp;
 
 public class timeEnded {
 
-    public int year,month,date,hour,minute,years,months,dates,hours,minutes;
+    public int year,month,date,hour,minute,years,months,dates,hours,minutes,db=1;
     public double lat,lon,late,lone;
 
     public void setyear(int year){
